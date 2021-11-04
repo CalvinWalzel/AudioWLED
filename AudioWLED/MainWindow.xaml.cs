@@ -181,6 +181,9 @@ namespace AudioWLED
             audioObserver = new AudioObserver(new WasapiLoopbackCapture(audioDevice), new HttpClient());
 
             audioObserver.Start();
+            txtAddress.IsEnabled = false;
+            cBoxAudioInterfaces.IsEnabled = false;
+            chckAutoStart.IsEnabled = false;
             btnStart.IsEnabled = false;
             btnStop.IsEnabled = true;
         }
@@ -188,6 +191,9 @@ namespace AudioWLED
         private void handleAudioObserverStop()
         {
             audioObserver.Stop();
+            txtAddress.IsEnabled = true;
+            cBoxAudioInterfaces.IsEnabled = true;
+            chckAutoStart.IsEnabled = true;
             btnStart.IsEnabled = true;
             btnStop.IsEnabled = false;
         }
