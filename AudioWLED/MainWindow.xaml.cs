@@ -1,10 +1,13 @@
 ﻿using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
+using System.Windows.Media;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 namespace AudioWLED
 {
@@ -92,13 +95,21 @@ namespace AudioWLED
         {
             int startLength = txtAddress.Text.Length;
 
-            await Task.Delay(300);
+            IPAddress ip;
 
+            await Task.Delay(300);
             if (startLength == txtAddress.Text.Length)
             {
+                bool isValidIPAdress = Regex.Matches(txtAddress.Text, "\\.").Count == 3 & IPAddress.TryParse(txtAddress.Text, out ip);
+
+                if (isValidIPAdress)
+                    txtAddress.Background = Brushes.LightGreen;
+                else
+                    txtAddress.Background = Brushes.LightPink;
+
                 Properties.Settings.Default.Address = txtAddress.Text;
-                Properties.Settings.Default.Save();
             }
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -112,7 +123,8 @@ namespace AudioWLED
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
-            } else
+            }
+            else
             {
                 storedWindowState = WindowState;
             }
@@ -157,5 +169,6 @@ namespace AudioWLED
             Properties.Settings.Default.AutoStart = false;
             Properties.Settings.Default.Save();
         }
+
     }
 }
