@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid Background="#FF636363">
-        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="10,11,0,0" Text="IP" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="#FF9E9E9E" TextChanged="txtAddress_TextChanged" Foreground="Black"/>
+        <TextBox x:Name="txtAddress" HorizontalAlignment="Left" Margin="10,11,0,0" Text="IP" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background="#FF9E9E9E" Foreground="Black"/>
         <ComboBox x:Name="cBoxAudioInterfaces" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="120">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1">
