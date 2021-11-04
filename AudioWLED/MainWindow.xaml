@@ -18,7 +18,7 @@
         </ComboBox>
         <CheckBox x:Name="chckAutoStart" Content="Auto start" HorizontalAlignment="Left" Margin="10,61,0,0" VerticalAlignment="Top" Width="120" Background="#FF9E9E9E"/>
         <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="10,81,0,0" VerticalAlignment="Top" Width="120" Click="btnStart_Click" Background="#FF9E9E9E"/>
-        <Button x:Name="btnStop" Content="Stop" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" Width="120" Click="btnStop_Click" Background="#FF9E9E9E"/>
+        <Button x:Name="btnStop" Content="Stop" HorizontalAlignment="Left" Margin="10,106,0,0" VerticalAlignment="Top" Width="120" Click="btnStop_Click" Background="#FF9E9E9E" IsEnabled="False"/>
         <Image x:Name="imgStatus" HorizontalAlignment="Left" Height="115" Margin="143,11,0,0" VerticalAlignment="Top" Width="108" Source="/Resources/LED-Off.png"/>
     </Grid>
 </Window>
