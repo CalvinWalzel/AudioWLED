@@ -11,6 +11,7 @@ namespace AudioWLED
         private readonly HttpClient client;
         private bool autoRestart;
         private string ip;
+        private bool lastStateActive;
 
         public AudioObserver(WasapiLoopbackCapture capture, HttpClient client)
         {
@@ -23,6 +24,7 @@ namespace AudioWLED
 
         public void Start()
         {
+            lastStateActive = false;
             ip = Properties.Settings.Default.Address;
 
             autoRestart = true;
@@ -47,14 +49,20 @@ namespace AudioWLED
             double rms = Math.Sqrt(sum / (buffer.Length / 2));
             double decibel = 20 * Math.Log10(rms);
 
-            if (Double.IsNegativeInfinity(decibel))
+            bool stateActive = !Double.IsNegativeInfinity(decibel);
+
+            if (stateActive != lastStateActive)
             {
-                client.GetStringAsync("http://" + ip + "/win&A=0");
+                if (stateActive)
+                {
+                    client.GetStringAsync("http://" + ip + "/win&A=128");
+                } else
+                {
+                    client.GetStringAsync("http://" + ip + "/win&A=0");
+                }
             }
-            else
-            {
-                client.GetStringAsync("http://" + ip + "/win&A=128");
-            }
+
+            lastStateActive = stateActive;
         }
 
         private void Capture_RecordingStopped(object sender, StoppedEventArgs e)
