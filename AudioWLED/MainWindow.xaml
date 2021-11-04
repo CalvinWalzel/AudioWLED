@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="AudioWLED" Height="311" Width="300" Loaded="Window_Loaded" Icon="/Resources/Logo.png" WindowStartupLocation="CenterScreen" Closing="Window_Closing" StateChanged="Window_StateChanged" IsVisibleChanged="Window_IsVisibleChanged" WindowState="Normal" ResizeMode="CanMinimize">
+        Title="AudioWLED" Height="311" Width="300" Icon="/Resources/Logo.png" WindowStartupLocation="CenterScreen" Closing="Window_Closing" StateChanged="Window_StateChanged" IsVisibleChanged="Window_IsVisibleChanged" WindowState="Normal" ResizeMode="CanMinimize">
     <Grid Background="#FF636363">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

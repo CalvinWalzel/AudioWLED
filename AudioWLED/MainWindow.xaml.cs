@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace AudioWLED
 {
@@ -21,7 +22,8 @@ namespace AudioWLED
         private System.Windows.Forms.ContextMenuStrip contextMenu;
 
         private readonly MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-        private readonly AudioObserver audioObserver;
+        
+        private AudioObserver audioObserver;
 
         public MainWindow()
         {
@@ -30,29 +32,35 @@ namespace AudioWLED
             CreateContextMenu();
             CreateNotifyIcon();
 
+            LoadAudioInterfaceItems();
+
             txtAddress.Text = Properties.Settings.Default.Address;
-            cBoxAudioInterfaces.SelectedValue = Properties.Settings.Default.AudioInterface;
             chckAutoStart.IsChecked = Properties.Settings.Default.AutoStart;
 
-            if (String.IsNullOrWhiteSpace((String)cBoxAudioInterfaces.SelectedValue))
-            {
-                cBoxAudioInterfaces.SelectedItem = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications).ToString();
-            }
-
-            audioObserver = new AudioObserver(new WasapiLoopbackCapture(), new HttpClient());
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            LoadAudioInterfaceItems();
+            if (Properties.Settings.Default.AutoStart)
+                handleAudioObserverStart();
         }
 
         private void LoadAudioInterfaceItems()
         {
+            cBoxAudioInterfaces.DisplayMemberPath = "Key";
+            cBoxAudioInterfaces.SelectedValuePath = "Value";
+
+            Dictionary<string, string> audioInterfaceOptions = new Dictionary<string, string>();
+
             for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
                 MMDevice device = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)[i];
-                cBoxAudioInterfaces.Items.Add(device.ToString());
+                audioInterfaceOptions.Add(device.ToString(), device.ID);
+            }
+
+            cBoxAudioInterfaces.ItemsSource = audioInterfaceOptions;
+
+            cBoxAudioInterfaces.SelectedValue = Properties.Settings.Default.AudioInterface;
+
+            if (String.IsNullOrWhiteSpace((String)cBoxAudioInterfaces.SelectedValue))
+            {
+                cBoxAudioInterfaces.SelectedValue = Properties.Settings.Default.AudioInterface = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications).ID;
             }
         }
 
@@ -79,16 +87,12 @@ namespace AudioWLED
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            audioObserver.Start();
-            btnStart.IsEnabled = false;
-            btnStop.IsEnabled = true;
+            handleAudioObserverStart();
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            audioObserver.Stop();
-            btnStart.IsEnabled = true;
-            btnStop.IsEnabled = false;
+            handleAudioObserverStop();
         }
 
         private async void txtAddress_TextChanged(object sender, TextChangedEventArgs e)
@@ -115,6 +119,8 @@ namespace AudioWLED
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Properties.Settings.Default.Save();
+
+            handleAudioObserverStop();
 
             notifyIcon.Dispose();
             notifyIcon = null;
@@ -156,7 +162,7 @@ namespace AudioWLED
 
         private void cBoxAudioInterfaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Properties.Settings.Default.AudioInterface = cBoxAudioInterfaces.SelectedValue.ToString();
+            Properties.Settings.Default.AudioInterface = ((KeyValuePair<string, string>)cBoxAudioInterfaces.SelectedItem).Value;
         }
 
         private void chckAutoStart_Checked(object sender, RoutedEventArgs e)
@@ -169,5 +175,21 @@ namespace AudioWLED
             Properties.Settings.Default.AutoStart = false;
         }
 
+        private void handleAudioObserverStart()
+        {
+            MMDevice audioDevice = enumerator.GetDevice(Properties.Settings.Default.AudioInterface);
+            audioObserver = new AudioObserver(new WasapiLoopbackCapture(audioDevice), new HttpClient());
+
+            audioObserver.Start();
+            btnStart.IsEnabled = false;
+            btnStop.IsEnabled = true;
+        }
+
+        private void handleAudioObserverStop()
+        {
+            audioObserver.Stop();
+            btnStart.IsEnabled = true;
+            btnStop.IsEnabled = false;
+        }
     }
 }
