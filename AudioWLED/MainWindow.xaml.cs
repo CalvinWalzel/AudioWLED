@@ -9,6 +9,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
+using System.Windows.Interop;
 
 namespace AudioWLED
 {
@@ -22,7 +24,8 @@ namespace AudioWLED
         private System.Windows.Forms.ContextMenuStrip contextMenu;
 
         private readonly MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-        
+        private readonly ImageSourceConverter imageSourceConverter = new ImageSourceConverter();
+
         private AudioObserver audioObserver;
 
         public MainWindow()
@@ -186,7 +189,9 @@ namespace AudioWLED
             chckAutoStart.IsEnabled = false;
             btnStart.IsEnabled = false;
             btnStop.IsEnabled = true;
+            imgStatus.Source = Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.LED_On.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
+
 
         private void handleAudioObserverStop()
         {
@@ -196,6 +201,7 @@ namespace AudioWLED
             chckAutoStart.IsEnabled = true;
             btnStart.IsEnabled = true;
             btnStop.IsEnabled = false;
+            imgStatus.Source = Imaging.CreateBitmapSourceFromHBitmap(Properties.Resources.LED_Off.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
     }
 }
