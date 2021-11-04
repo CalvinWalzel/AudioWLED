@@ -12,9 +12,9 @@
         </Grid.ColumnDefinitions>
         <Image x:Name="imgStatus" Height="115" Margin="51,10,63,0" VerticalAlignment="Top" Source="/Resources/Logo.png" StretchDirection="Both" Grid.Column="1" HorizontalAlignment="Center"/>
         <Label x:Name="lblAddress" Content="WLED IP Address" HorizontalAlignment="Left" Margin="10,133,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="txtAddress" Margin="100,137,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FF9E9E9E" Foreground="Black" Grid.Column="1" Height="18"/>
+        <TextBox x:Name="txtAddress" Margin="100,137,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FF9E9E9E" Foreground="Black" Grid.Column="1" Height="18" TextChanged="txtAddress_TextChanged"/>
         <Label x:Name="labelAudioInterface" Content="Audio Interface" HorizontalAlignment="Left" Margin="10,164,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="cBoxAudioInterfaces" Margin="100,166,10,0" VerticalAlignment="Top" Grid.Column="1" Height="21">
+        <ComboBox x:Name="cBoxAudioInterfaces" Margin="100,166,10,0" VerticalAlignment="Top" Grid.Column="1" Height="21" SelectionChanged="cBoxAudioInterfaces_SelectionChanged">
             <ComboBox.Background>
                 <LinearGradientBrush EndPoint="0,1">
                     <GradientStop Color="#FFF0F0F0"/>
@@ -22,7 +22,7 @@
                 </LinearGradientBrush>
             </ComboBox.Background>
         </ComboBox>
-        <CheckBox x:Name="chckAutoStart" Content="Auto start" Margin="100,197,10,0" VerticalAlignment="Top" Background="#FF9E9E9E" Grid.Column="1" Height="15"/>
+        <CheckBox x:Name="chckAutoStart" Content="Auto start" Margin="100,197,10,0" VerticalAlignment="Top" Background="#FF9E9E9E" Grid.Column="1" Height="15" Checked="chckAutoStart_Checked" Unchecked="chckAutoStart_Unchecked"/>
         <Button x:Name="btnStart" Content="Start" Margin="10,220,10,0" VerticalAlignment="Top" Click="btnStart_Click" Background="#FF9E9E9E" Grid.ColumnSpan="2" Height="20"/>
         <Button x:Name="btnStop" Content="Stop" Margin="10,245,10,0" Click="btnStop_Click" Background="#FF9E9E9E" IsEnabled="False" Grid.ColumnSpan="2" Height="20" VerticalAlignment="Top"/>
     </Grid>

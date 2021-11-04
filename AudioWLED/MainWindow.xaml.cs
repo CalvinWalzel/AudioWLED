@@ -2,9 +2,9 @@
 using NAudio.Wave;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace AudioWLED
 {
@@ -15,8 +15,9 @@ namespace AudioWLED
     {
         private WindowState storedWindowState = WindowState.Normal;
         private System.Windows.Forms.NotifyIcon notifyIcon;
-        private ContextMenuStrip contextMenu;
+        private System.Windows.Forms.ContextMenuStrip contextMenu;
 
+        private readonly MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
         private readonly AudioObserver audioObserver;
 
         public MainWindow()
@@ -24,7 +25,16 @@ namespace AudioWLED
             InitializeComponent();
 
             CreateContextMenu();
-            LoadNotifyIcon();
+            CreateNotifyIcon();
+
+            txtAddress.Text = Properties.Settings.Default.Address;
+            cBoxAudioInterfaces.SelectedValue = Properties.Settings.Default.AudioInterface;
+            chckAutoStart.IsChecked = Properties.Settings.Default.AutoStart;
+
+            if (String.IsNullOrWhiteSpace((String)cBoxAudioInterfaces.SelectedValue))
+            {
+                cBoxAudioInterfaces.SelectedItem = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Communications).ToString();
+            }
 
             audioObserver = new AudioObserver(new WasapiLoopbackCapture(), new HttpClient());
         }
@@ -36,8 +46,6 @@ namespace AudioWLED
 
         private void LoadAudioInterfaceItems()
         {
-            MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-
             for (int i = 0; i < WaveOut.DeviceCount; i++)
             {
                 MMDevice device = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)[i];
@@ -47,17 +55,17 @@ namespace AudioWLED
 
         private void CreateContextMenu()
         {
-            contextMenu = new ContextMenuStrip();
+            contextMenu = new System.Windows.Forms.ContextMenuStrip();
 
             contextMenu.Items.Add("&Show", null, ContextMenuShow_Click);
             contextMenu.Items.Add("E&xit", null, ContextMenuExit_Click);
         }
 
-        private void LoadNotifyIcon()
+        private void CreateNotifyIcon()
         {
             var iconHandle = Properties.Resources.Logo.GetHicon();
 
-            notifyIcon = new NotifyIcon
+            notifyIcon = new System.Windows.Forms.NotifyIcon
             {
                 Text = Title,
                 Icon = System.Drawing.Icon.FromHandle(iconHandle),
@@ -78,6 +86,19 @@ namespace AudioWLED
             audioObserver.Stop();
             btnStart.IsEnabled = true;
             btnStop.IsEnabled = false;
+        }
+
+        private async void txtAddress_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int startLength = txtAddress.Text.Length;
+
+            await Task.Delay(300);
+
+            if (startLength == txtAddress.Text.Length)
+            {
+                Properties.Settings.Default.Address = txtAddress.Text;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -116,7 +137,25 @@ namespace AudioWLED
 
         private void ContextMenuExit_Click(object sender, EventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            Application.Current.Shutdown();
+        }
+
+        private void cBoxAudioInterfaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Properties.Settings.Default.AudioInterface = cBoxAudioInterfaces.SelectedValue.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void chckAutoStart_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.AutoStart = true;
+            Properties.Settings.Default.Save();
+        }
+
+        private void chckAutoStart_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.AutoStart = false;
+            Properties.Settings.Default.Save();
         }
     }
 }
