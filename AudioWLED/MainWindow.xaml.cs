@@ -97,12 +97,13 @@ namespace AudioWLED
             if (startLength == txtAddress.Text.Length)
             {
                 Properties.Settings.Default.Address = txtAddress.Text;
-                Properties.Settings.Default.Save();
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Properties.Settings.Default.Save();
+
             notifyIcon.Dispose();
             notifyIcon = null;
         }
@@ -143,19 +144,16 @@ namespace AudioWLED
         private void cBoxAudioInterfaces_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Properties.Settings.Default.AudioInterface = cBoxAudioInterfaces.SelectedValue.ToString();
-            Properties.Settings.Default.Save();
         }
 
         private void chckAutoStart_Checked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoStart = true;
-            Properties.Settings.Default.Save();
         }
 
         private void chckAutoStart_Unchecked(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoStart = false;
-            Properties.Settings.Default.Save();
         }
     }
 }
