@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioWLEDConsole", "AudioWLEDConsole\AudioWLEDConsole.csproj", "{57A14753-7D1B-48BD-9A91-73B111BAC8F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioWLED", "AudioWLED\AudioWLED.csproj", "{C216E7F8-E55A-41C6-A083-FF18C6F6E487}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57A14753-7D1B-48BD-9A91-73B111BAC8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A14753-7D1B-48BD-9A91-73B111BAC8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A14753-7D1B-48BD-9A91-73B111BAC8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A14753-7D1B-48BD-9A91-73B111BAC8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C216E7F8-E55A-41C6-A083-FF18C6F6E487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C216E7F8-E55A-41C6-A083-FF18C6F6E487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C216E7F8-E55A-41C6-A083-FF18C6F6E487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C216E7F8-E55A-41C6-A083-FF18C6F6E487}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1E8372FE-1701-4049-9600-110920A8967E}
+	EndGlobalSection
+EndGlobal
