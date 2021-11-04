@@ -10,6 +10,7 @@ namespace AudioWLED
         private readonly WasapiLoopbackCapture capture;
         private readonly HttpClient client;
         private bool autoRestart;
+        private string ip;
 
         public AudioObserver(WasapiLoopbackCapture capture, HttpClient client)
         {
@@ -22,6 +23,8 @@ namespace AudioWLED
 
         public void Start()
         {
+            ip = Properties.Settings.Default.Address;
+
             autoRestart = true;
             capture.StartRecording();
         }
@@ -43,9 +46,6 @@ namespace AudioWLED
             }
             double rms = Math.Sqrt(sum / (buffer.Length / 2));
             double decibel = 20 * Math.Log10(rms);
-
-            // TODO: Replace with setting here
-            string ip = "127.0.0.1";
 
             if (Double.IsNegativeInfinity(decibel))
             {
