@@ -37,11 +37,15 @@ namespace AudioWLED
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             audioObserver.Start();
+            btnStart.IsEnabled = false;
+            btnStop.IsEnabled = true;
         }
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             audioObserver.Stop();
+            btnStart.IsEnabled = true;
+            btnStop.IsEnabled = false;
         }
     }
 }
